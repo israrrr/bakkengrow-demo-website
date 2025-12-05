@@ -2,7 +2,7 @@
 
 > **"Be A Breadwinner."** > Institutional-grade crypto asset management blending DeFi innovation with sustainable growth and bank-grade security.
 
-<!--![Bakkengrow Preview](images/BkGr_logo.png)--> **
+<!--![Bakkengrow Preview](images/BkGr_logo.png) **--> 
 
 ## 📋 Project Overview
 
