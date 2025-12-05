@@ -46,14 +46,83 @@
             --text-main: #ffffff;
             --text-muted: #b8b8b8;
             --nav-bg: rgba(5, 1, 10, 0.95);
-
             --hero-overlay: radial-gradient(circle at 80% 20%, rgba(90, 24, 154, 0.25) 0%, transparent 60%);
             --anim-fill: rgba(255, 255, 255, 0.02);
             --anim-stroke: rgba(255, 255, 255, 0.06);
             --pattern-opacity: 0.05;
         }
 
-        /* --- 2. RESET & BASE --- */
+        /* --- 2. PRE-LOADER STYLES --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050505;
+            /* Always dark background for impact */
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+
+        /* Animation from your script */
+        .logo-shape {
+            fill: #5a189a;
+        }
+
+        .fold-path {
+            opacity: 0;
+            transform-origin: center;
+            transform-box: fill-box;
+        }
+
+        @keyframes paperSnapLoop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
+            }
+
+            10% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+
+            90% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .fold-1 {
+            animation: paperSnapLoop 3s ease-in-out infinite;
+            animation-delay: 0.1s;
+        }
+
+        /* Sped up to 3s */
+        .fold-2 {
+            animation: paperSnapLoop 3s ease-in-out infinite;
+            animation-delay: 0.2s;
+        }
+
+        .fold-3 {
+            animation: paperSnapLoop 3s ease-in-out infinite;
+            animation-delay: 0.3s;
+        }
+
+        .fold-4 {
+            animation: paperSnapLoop 3s ease-in-out infinite;
+            animation-delay: 0.4s;
+        }
+
+        /* --- 3. RESET & BASE --- */
         * {
             margin: 0;
             padding: 0;
@@ -70,7 +139,6 @@
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
             line-height: 1.7;
-            /* MOBILE FIX: Prevent horizontal scroll */
             overflow-x: hidden;
             width: 100%;
             transition: background-color 0.3s ease, color 0.3s ease;
@@ -118,7 +186,7 @@
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
 
-        /* --- 3. MOTION BACKGROUND --- */
+        /* --- 4. MOTION BACKGROUND --- */
         #motion-container {
             position: fixed;
             top: 0;
@@ -180,7 +248,7 @@
             z-index: 0;
         }
 
-        /* --- 4. NAVIGATION --- */
+        /* --- 5. NAVIGATION --- */
         header {
             padding: 15px 0;
             position: fixed;
@@ -212,8 +280,6 @@
             max-height: 40px;
             width: auto;
         }
-
-        /* Ensure logo scales */
 
         .nav-actions {
             display: flex;
@@ -287,7 +353,7 @@
             height: 32px;
         }
 
-        /* --- 5. HERO SECTION --- */
+        /* --- 6. HERO SECTION --- */
         .hero {
             min-height: 90vh;
             display: flex;
@@ -388,12 +454,6 @@
             justify-content: center;
         }
 
-        .hero-visual svg {
-            width: 100%;
-            height: auto;
-            max-width: 400px;
-        }
-
         .scroll-down {
             position: absolute;
             bottom: 30px;
@@ -418,7 +478,7 @@
             }
         }
 
-        /* --- 6. PARTNERS STRIP --- */
+        /* --- 7. PARTNERS STRIP --- */
         .partners-strip {
             background: var(--bg-offset);
             padding: 30px 0;
@@ -439,7 +499,7 @@
             margin: 0 40px;
         }
 
-        /* --- 7. TICKER --- */
+        /* --- 8. TICKER --- */
         .ticker-wrap {
             width: 100%;
             background: var(--ticker-bg);
@@ -487,7 +547,7 @@
             }
         }
 
-        /* --- 8. SECTIONS --- */
+        /* --- 9. SECTIONS --- */
         .section-padding {
             padding: 120px 0;
             position: relative;
@@ -562,7 +622,7 @@
             transform: translateX(5px);
         }
 
-        /* Global Liquidity - 5 Icons Row */
+        /* Global Liquidity */
         .global-section {
             text-align: center;
             display: flex;
@@ -778,13 +838,11 @@
             text-align: justify;
         }
 
-        /* --- MOBILE RESPONSIVENESS FIXES --- */
         @media (max-width: 900px) {
             .nav-links {
                 display: none;
             }
 
-            /* Hide Desktop Menu on Mobile */
             .hero-grid,
             .card-grid,
             .trust-grid,
@@ -792,45 +850,34 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Stack Grids */
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
 
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-padding {
-                padding: 60px 0;
-            }
-
-            .glass-panel {
-                padding: 25px;
-            }
-
-            .currency-row {
-                gap: 20px;
-                padding: 20px 30px;
-                font-size: 1.8rem;
-            }
-
-            .footer-grid {
-                gap: 30px;
-            }
-
-            .hero-visual {
-                height: 300px;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            .partners-grid {
+                gap: 40px;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <div id="preloader">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 115" width="150" height="150"
+            style="overflow: visible;">
+            <g id="Icon_Container">
+                <path class="logo-shape fold-path fold-1"
+                    d="M38.16,39.66V73a2.35,2.35,0,0,1-2.35,2.35H2.05l25.32-38h8.44A2.35,2.35,0,0,1,38.16,39.66Z" />
+                <path class="logo-shape fold-path fold-2"
+                    d="M37.48.09A.3.3,0,0,1,38,.3V16.74a6,6,0,0,1-1,3.36L25.5,37.31l-.17.26L.72,74.49A.39.39,0,0,1,0,74.27V40.18a6.29,6.29,0,0,1,1.84-4.45Z" />
+                <path class="logo-shape fold-path fold-3"
+                    d="M48.57,72.65V39.37A2.36,2.36,0,0,1,50.92,37H84.69L59.36,75H50.92A2.35,2.35,0,0,1,48.57,72.65Z" />
+                <path class="logo-shape fold-path fold-4"
+                    d="M49.25,112.23a.29.29,0,0,1-.5-.21V95.57a6,6,0,0,1-1-3.36L61.23,75l.18-.26L86,37.83a.39.39,0,0,1,.72.21v34.1a6.3,6.3,0,0,1-1.85,4.45Z" />
+            </g>
+        </svg>
+    </div>
 
     <div class="origami-bg"></div>
     <div id="motion-container"></div>
@@ -1147,6 +1194,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // PRELOADER LOGIC
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => { preloader.style.display = 'none'; }, 500);
+                }, 2500); // Animation plays for 2.5s
+            });
 
             /* 1. MOTION ENGINE (Ghost + Solid Mix + Crypto Icons) */
             const motionContainer = document.getElementById('motion-container');
