@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bakkengrow | Be A Breadwinner</title>
 
     <link
@@ -60,7 +60,6 @@
             box-sizing: border-box;
         }
 
-        /* SCROLL BEHAVIOR FIX */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 100px;
@@ -71,7 +70,9 @@
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
             line-height: 1.7;
+            /* MOBILE FIX: Prevent horizontal scroll */
             overflow-x: hidden;
+            width: 100%;
             transition: background-color 0.3s ease, color 0.3s ease;
             position: relative;
         }
@@ -200,13 +201,19 @@
             align-items: center;
         }
 
-        /* Brand Logo - NO HOVER CLASS */
         .brand-logo {
             display: flex;
             align-items: center;
             gap: 8px;
             text-decoration: none;
         }
+
+        .brand-logo img {
+            max-height: 40px;
+            width: auto;
+        }
+
+        /* Ensure logo scales */
 
         .nav-actions {
             display: flex;
@@ -381,6 +388,12 @@
             justify-content: center;
         }
 
+        .hero-visual svg {
+            width: 100%;
+            height: auto;
+            max-width: 400px;
+        }
+
         .scroll-down {
             position: absolute;
             bottom: 30px;
@@ -549,7 +562,7 @@
             transform: translateX(5px);
         }
 
-        /* Global Liquidity */
+        /* Global Liquidity - 5 Icons Row */
         .global-section {
             text-align: center;
             display: flex;
@@ -569,6 +582,8 @@
             border: 1px solid var(--glass-border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .currency-icon {
@@ -763,11 +778,13 @@
             text-align: justify;
         }
 
+        /* --- MOBILE RESPONSIVENESS FIXES --- */
         @media (max-width: 900px) {
             .nav-links {
                 display: none;
             }
 
+            /* Hide Desktop Menu on Mobile */
             .hero-grid,
             .card-grid,
             .trust-grid,
@@ -775,12 +792,39 @@
                 grid-template-columns: 1fr;
             }
 
+            /* Stack Grids */
             h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
             }
 
-            .partners-grid {
-                gap: 40px;
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+
+            .glass-panel {
+                padding: 25px;
+            }
+
+            .currency-row {
+                gap: 20px;
+                padding: 20px 30px;
+                font-size: 1.8rem;
+            }
+
+            .footer-grid {
+                gap: 30px;
+            }
+
+            .hero-visual {
+                height: 300px;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
         }
     </style>
@@ -805,9 +849,9 @@
 
             <div class="nav-actions">
                 <div class="nav-links">
-                    <a href="#strategies" class="nav-link-item hover-lift">Strategy</a>
-                    <a href="#security" class="nav-link-item hover-lift">Security</a>
-                    <a href="#insights" class="nav-link-item hover-lift">Insights</a>
+                    <a href="#strategies" class="nav-link-item">Strategy</a>
+                    <a href="#security" class="nav-link-item">Security</a>
+                    <a href="#insights" class="nav-link-item">Insights</a>
                     <a href="https://www.binance.com/en/markets/overview" target="_blank"
                         class="data-btn hover-lift">Binance</a>
                     <a href="https://opensea.io/" target="_blank" class="data-btn hover-lift">OpenSea</a>
