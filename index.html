@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakkengrow | Be A Breadwinner</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700;800&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <style>
+        /* --- 1. THEME VARIABLES --- */
+        :root {
+            --brand-purple: #5a189a;
+            --brand-purple-soft: #9d4edd;
+            --brand-green: #40916c;
+            --brand-blue: #007766;
+            --brand-blue-dark: #004d40;
+
+            /* Light Mode */
+            --bg-main: #f0f2f5;
+            --bg-offset: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-main: #1a1a1a;
+            --text-muted: #555555;
+            --nav-bg: rgba(255, 255, 255, 0.98);
+            --ticker-bg: #0b0511;
+            --ticker-text: #ffffff;
+
+            --hero-overlay: radial-gradient(circle at 80% 20%, rgba(90, 24, 154, 0.08) 0%, transparent 60%);
+            --anim-fill: rgba(0, 0, 0, 0.04);
+            --anim-stroke: rgba(0, 0, 0, 0.08);
+            --pattern-opacity: 0.03;
+        }
+
+        [data-theme="dark"] {
+            --bg-main: #05010a;
+            --bg-offset: #0f0a16;
+            --glass-bg: rgba(20, 20, 25, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #b8b8b8;
+            --nav-bg: rgba(5, 1, 10, 0.95);
+
+            --hero-overlay: radial-gradient(circle at 80% 20%, rgba(90, 24, 154, 0.25) 0%, transparent 60%);
+            --anim-fill: rgba(255, 255, 255, 0.02);
+            --anim-stroke: rgba(255, 255, 255, 0.06);
+            --pattern-opacity: 0.05;
+        }
+
+        /* --- 2. RESET & BASE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* SCROLL BEHAVIOR FIX */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
+
+        :root {
+            --font-display: 'Exo 2', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        a {
+            text-decoration: none !important;
+            color: inherit;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Unified Hover Effect */
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 40px;
+            border-radius: 12px;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+        }
+
+        /* --- 3. MOTION BACKGROUND --- */
+        #motion-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .float-symbol {
+            position: absolute;
+            font-family: var(--font-display);
+            font-weight: 800;
+            user-select: none;
+            will-change: transform, opacity;
+        }
+
+        .float-symbol.solid {
+            color: var(--anim-fill);
+        }
+
+        .float-symbol.ghost {
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--anim-stroke);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(0deg) scale(0.9);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            85% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(20deg) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        .origami-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/BkGr_pattern.png');
+            background-size: 500px;
+            opacity: var(--pattern-opacity);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- 4. NAVIGATION --- */
+        header {
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Brand Logo - NO HOVER CLASS */
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .nav-link-item {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .nav-link-item:hover {
+            color: var(--brand-purple);
+        }
+
+        .nav-link-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--brand-purple);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link-item:hover::after {
+            width: 100%;
+        }
+
+        .data-btn {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 2px;
+            color: var(--brand-blue);
+            border: 1px solid var(--brand-blue);
+            background: rgba(0, 119, 102, 0.05);
+            text-transform: uppercase;
+        }
+
+        .data-btn:hover {
+            background: var(--brand-blue);
+            color: #fff;
+        }
+
+        .theme-switch {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+
+        /* --- 5. HERO SECTION --- */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: var(--hero-overlay);
+            padding-top: 80px;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .tagline-mark {
+            font-family: var(--font-display);
+            color: var(--brand-purple);
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tagline-mark::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--brand-purple);
+            display: block;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 3.8rem;
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--brand-purple-soft));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .txt-purple {
+            color: var(--brand-purple);
+            font-weight: 700;
+        }
+
+        .txt-green {
+            color: var(--brand-green);
+            font-weight: 700;
+        }
+
+        .txt-blue {
+            color: var(--brand-blue);
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: var(--brand-purple);
+            color: white;
+            padding: 16px 36px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 92% 100%, 0 100%);
+            transition: all 0.3s;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(90, 24, 154, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--brand-purple-soft);
+            transform: translateY(-4px);
+        }
+
+        .hero-visual {
+            height: 450px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.5;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        /* --- 6. PARTNERS STRIP --- */
+        .partners-strip {
+            background: var(--bg-offset);
+            padding: 30px 0;
+            position: relative;
+            z-index: 10;
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .partner-logo {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            opacity: 0.6;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            margin: 0 40px;
+        }
+
+        /* --- 7. TICKER --- */
+        .ticker-wrap {
+            width: 100%;
+            background: var(--ticker-bg);
+            color: var(--ticker-text);
+            overflow: hidden;
+            display: flex;
+            white-space: nowrap;
+            padding: 12px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 40s linear infinite;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .val-up {
+            color: var(--brand-green);
+            margin-left: 8px;
+        }
+
+        .val-down {
+            color: #ff4444;
+            margin-left: 8px;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* --- 8. SECTIONS --- */
+        .section-padding {
+            padding: 120px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .bg-white {
+            background-color: var(--bg-main);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .bg-offset {
+            background-color: var(--bg-offset);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        /* Strategies */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .stat-display {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 30px;
+        }
+
+        .stat-num {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--brand-green);
+            font-family: var(--font-display);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            color: var(--text-muted);
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--brand-green);
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateX(5px);
+        }
+
+        /* Global Liquidity */
+        .global-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .currency-row {
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+            font-size: 2.5rem;
+            color: var(--brand-purple);
+            background: var(--glass-bg);
+            padding: 30px 60px;
+            border-radius: 100px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            align-items: center;
+        }
+
+        .currency-icon {
+            animation: bob 3s infinite ease-in-out;
+            opacity: 1;
+        }
+
+        .currency-icon:nth-child(even) {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes bob {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Trust */
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .trust-card:hover {
+            border-color: var(--brand-blue);
+        }
+
+        .trust-icon {
+            font-size: 2.5rem;
+            color: var(--brand-blue);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 119, 102, 0.1);
+            border-radius: 50%;
+        }
+
+        /* Insights */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .insight-card:hover {
+            border-color: var(--brand-purple);
+        }
+
+        .insight-date {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--brand-purple);
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 700;
+        }
+
+        .read-more {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 15px;
+            display: inline-block;
+            border-bottom: 2px solid var(--brand-purple);
+        }
+
+        /* Team */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .team-img-wrap {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--glass-border);
+            background: var(--bg-offset);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-icon-placeholder {
+            font-size: 4rem;
+            color: var(--text-muted);
+            opacity: 0.3;
+        }
+
+        .team-socials {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .social-icon {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--brand-purple);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #05010a;
+            color: #888;
+            padding: 80px 0;
+            font-size: 0.85rem;
+            border-top: 1px solid #222;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-family: var(--font-display);
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a:hover {
+            color: var(--brand-purple-soft);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .footer-socials i {
+            font-size: 1.5rem;
+            color: #888;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .footer-socials i:hover {
+            color: var(--brand-purple-soft);
+            transform: scale(1.1);
+        }
+
+        .legal-text {
+            font-size: 0.7rem;
+            color: #555;
+            margin-top: 50px;
+            line-height: 1.6;
+            border-top: 1px solid #222;
+            padding-top: 30px;
+            text-align: justify;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-grid,
+            .card-grid,
+            .trust-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.8rem;
+            }
+
+            .partners-grid {
+                gap: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="origami-bg"></div>
+    <div id="motion-container"></div>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand-logo">
+                <img src="images/BkGr_logo.png" alt="Logo" style="height: 40px; width: auto;"
+                    onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
+                <img src="images/BkGr_wordmark.png" alt="Bakkengrow"
+                    style="height: 24px; width: auto; margin-left: 8px; margin-top: 4px;"
+                    onerror="this.style.display='none';">
+                <span id="logo-text"
+                    style="display:none; font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--brand-purple);">BAKKENGROW</span>
+            </a>
+
+            <div class="nav-actions">
+                <div class="nav-links">
+                    <a href="#strategies" class="nav-link-item hover-lift">Strategy</a>
+                    <a href="#security" class="nav-link-item hover-lift">Security</a>
+                    <a href="#insights" class="nav-link-item hover-lift">Insights</a>
+                    <a href="https://www.binance.com/en/markets/overview" target="_blank"
+                        class="data-btn hover-lift">Binance</a>
+                    <a href="https://opensea.io/" target="_blank" class="data-btn hover-lift">OpenSea</a>
+                </div>
+                <button class="theme-switch hover-lift" onclick="toggleTheme()" title="Toggle Dark Mode">🌗</button>
+                <a href="#" class="btn-primary hover-lift" style="padding: 10px 24px; font-size: 0.8rem;">Portal</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <span class="tagline-mark">BE A BREADWINNER</span>
+                    <h1>Responsible Wealth.<br>For The Family Breadwinner.</h1>
+                    <p>
+                        We replace speculation with structure. Institutional-grade crypto asset management blending
+                        <span class="txt-purple">DeFi Innovation</span> with
+                        <span class="txt-green">Sustainable Growth</span> and
+                        <span class="txt-blue">Bank-Grade Security</span>.
+                    </p>
+                    <a href="#" class="btn-primary hover-lift" style="margin-top: 20px;">Secure Your Allocation</a>
+                </div>
+
+                <div class="hero-visual">
+                    <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="200" cy="200" r="120" stroke="var(--brand-purple)" stroke-width="1.5"
+                            stroke-dasharray="10 10" opacity="0.3">
+                            <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200"
+                                dur="20s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="200" cy="200" r="80" stroke="var(--brand-green)" stroke-width="2" opacity="0.5" />
+                        <path d="M200 120 L280 200 L200 280 L120 200 Z" stroke="var(--brand-blue)" stroke-width="2"
+                            fill="none" />
+                        <circle cx="200" cy="120" r="6" fill="var(--brand-purple)" />
+                        <circle cx="280" cy="200" r="6" fill="var(--brand-purple)" />
+                        <circle cx="200" cy="280" r="6" fill="var(--brand-purple)" />
+                        <circle cx="120" cy="200" r="6" fill="var(--brand-purple)" />
+                        <circle cx="200" cy="200" r="15" fill="var(--brand-green)">
+                            <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+            <div class="scroll-down">
+                <i class="ri-arrow-down-line" style="font-size: 1.5rem; color: var(--brand-purple);"></i>
+            </div>
+        </div>
+    </section>
+
+    <div class="partners-strip">
+        <div class="container" style="overflow:hidden;">
+            <div
+                style="font-size:0.7rem; text-align:center; margin-bottom:15px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:700;">
+                Infrastructure Secured By</div>
+            <div class="ticker-wrap" style="background:transparent; border:none; padding:0;">
+                <div class="ticker-track" id="partners-track">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ticker-wrap">
+        <div class="ticker-track" id="ticker-track">
+            <span style="padding: 0 40px; color: #888;">Loading Market Stream...</span>
+        </div>
+    </div>
+
+    <section class="section-padding bg-offset" id="strategies">
+        <div class="container">
+            <div class="card-grid">
+                <div class="glass-panel hover-lift">
+                    <span class="tagline-mark" style="color: var(--brand-green);">STRATEGY</span>
+                    <h2>The Green Spectrum</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 25px;">
+                        Our proprietary algorithm focuses on low-risk arbitrage and stablecoin yields. We prioritize the
+                        return <em>of</em> capital before the return <em>on</em> capital.
+                    </p>
+                    <div class="stat-display">
+                        <div>
+                            <div class="stat-num">+14.2%</div>
+                            <div class="stat-label">Historical APY</div>
+                        </div>
+                        <div>
+                            <div class="stat-num">0%</div>
+                            <div class="stat-label">Principal Loss</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <svg width="100%" height="300" viewBox="0 0 500 300" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="growthGrad" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="var(--brand-green)" stop-opacity="0.2" />
+                                <stop offset="100%" stop-color="var(--brand-green)" stop-opacity="0" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M0 280 C 100 280, 200 200, 300 180 S 400 100, 500 50 V 300 H 0 Z"
+                            fill="url(#growthGrad)" />
+                        <path d="M0 280 C 100 280, 200 200, 300 180 S 400 100, 500 50" fill="none"
+                            stroke="var(--brand-green)" stroke-width="3" />
+                        <circle cx="300" cy="180" r="6" fill="var(--bg-main)" stroke="var(--brand-green)"
+                            stroke-width="2" />
+                        <circle cx="500" cy="50" r="6" fill="var(--bg-main)" stroke="var(--brand-green)"
+                            stroke-width="2" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-white">
+        <div class="container global-section">
+            <span class="tagline-mark" style="justify-content:center; color: var(--brand-purple);">BORDERLESS</span>
+            <h2>Global Asset Liquidity</h2>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 20px auto;">
+                Capital has no nationality. We facilitate seamless movement between Fiat (INR/USD) and Digital Assets.
+            </p>
+
+            <div class="currency-row hover-lift">
+                <i class="ri-money-dollar-circle-line currency-icon" style="color:var(--brand-green)"></i>
+                <i class="ri-money-euro-circle-line currency-icon" style="color:var(--brand-blue)"></i>
+                <i class="ri-money-pound-circle-line currency-icon" style="color:var(--brand-purple)"></i>
+                <i class="ri-money-rupee-circle-line currency-icon" style="color:var(--brand-blue-dark)"></i>
+                <i class="ri-money-cny-circle-line currency-icon" style="color:var(--brand-purple-soft)"></i>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-offset" id="security">
+        <div class="container">
+            <div class="section-header">
+                <span class="tagline-mark" style="color: var(--brand-blue); justify-content:center;">SECURITY</span>
+                <h2>The Trust Framework</h2>
+                <p style="color: var(--text-muted);">We don't ask for trust. We prove it through blockchain
+                    verification.</p>
+            </div>
+            <div class="trust-grid">
+                <div class="glass-panel trust-card hover-lift">
+                    <div class="trust-icon"><i class="ri-government-line"></i></div>
+                    <h3 style="margin-bottom: 10px; color: var(--brand-blue-dark);">Regulatory Compliant</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Fully KYC/AML compliant structure designed
+                        for the Indian regulatory landscape.</p>
+                </div>
+                <div class="glass-panel trust-card hover-lift">
+                    <div class="trust-icon"><i class="ri-safe-2-line"></i></div>
+                    <h3 style="margin-bottom: 10px; color: var(--brand-blue-dark);">Cold Storage</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">90% of assets are held in multi-sig cold
+                        wallets, offline and air-gapped.</p>
+                </div>
+                <div class="glass-panel trust-card hover-lift">
+                    <div class="trust-icon"><i class="ri-search-eye-line"></i></div>
+                    <h3 style="margin-bottom: 10px; color: var(--brand-blue-dark);">Auditable Proof</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Real-time on-chain proof of reserves. Verify
+                        our solvency instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-white" id="insights">
+        <div class="container">
+            <div class="section-header">
+                <span class="tagline-mark"
+                    style="color: var(--brand-purple); justify-content:center;">INTELLIGENCE</span>
+                <h2>Market Reports</h2>
+            </div>
+            <div class="insights-grid">
+                <div class="glass-panel insight-card hover-lift">
+                    <span class="insight-date">OCT 2024 | REGULATION</span>
+                    <h3 class="insight-title">The State of DeFi Policy</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted);">How new Indian policies are shaping the future
+                        of decentralized finance.</p>
+                    <span class="read-more">Read Analysis</span>
+                </div>
+                <div class="glass-panel insight-card hover-lift">
+                    <span class="insight-date">SEP 2024 | MARKET CYCLE</span>
+                    <h3 class="insight-title">Bitcoin Halving Impact</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted);">Analyzing historic market cycles and what the
+                        next halving means for your portfolio.</p>
+                    <span class="read-more">Read Analysis</span>
+                </div>
+                <div class="glass-panel insight-card hover-lift">
+                    <span class="insight-date">AUG 2024 | YIELD</span>
+                    <h3 class="insight-title">Stablecoins vs. Fiat</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted);">Why high-yield stablecoin accounts are
+                        outperforming traditional savings.</p>
+                    <span class="read-more">Read Analysis</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding bg-offset">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <span class="tagline-mark" style="justify-content:center; color: var(--text-main);">LEADERSHIP</span>
+                <h2>Built by Experts</h2>
+            </div>
+            <div class="team-grid">
+                <div class="glass-panel team-card hover-lift">
+                    <div class="team-img-wrap">
+                        <i class="ri-user-smile-line team-icon-placeholder"></i>
+                    </div>
+                    <h4 style="font-family:var(--font-display);">Founder Name</h4>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Chief Executive Officer</p>
+                    <div class="team-socials">
+                        <a href="#" class="social-icon"><i class="ri-linkedin-fill"></i></a>
+                        <a href="#" class="social-icon"><i class="ri-twitter-x-fill"></i></a>
+                    </div>
+                </div>
+                <div class="glass-panel team-card hover-lift">
+                    <div class="team-img-wrap">
+                        <i class="ri-user-star-line team-icon-placeholder"></i>
+                    </div>
+                    <h4 style="font-family:var(--font-display);">Founder Name</h4>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Chief Investment Officer</p>
+                    <div class="team-socials">
+                        <a href="#" class="social-icon"><i class="ri-linkedin-fill"></i></a>
+                        <a href="#" class="social-icon"><i class="ri-twitter-x-fill"></i></a>
+                    </div>
+                </div>
+                <div class="glass-panel team-card hover-lift">
+                    <div class="team-img-wrap">
+                        <i class="ri-user-settings-line team-icon-placeholder"></i>
+                    </div>
+                    <h4 style="font-family:var(--font-display);">Founder Name</h4>
+                    <p style="font-size:0.85rem; color:var(--text-muted);">Head of Technology</p>
+                    <div class="team-socials">
+                        <a href="#" class="social-icon"><i class="ri-linkedin-fill"></i></a>
+                        <a href="#" class="social-icon"><i class="ri-twitter-x-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="footer-logo">BAKKENGROW</a>
+                    <p>Redefining wealth management in a decentralized world. Committed to transparency, security, and
+                        growth.</p>
+                    <div class="footer-socials">
+                        <a href="#"><i class="ri-linkedin-fill"></i></a>
+                        <a href="#"><i class="ri-twitter-x-fill"></i></a>
+                        <a href="#"><i class="ri-instagram-line"></i></a>
+                        <a href="#"><i class="ri-facebook-circle-fill"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Client Portal</a></li>
+                        <li><a href="#">Knowledge Base</a></li>
+                        <li><a href="#">Security Audits</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="legal-text">
+                <strong>RISK DISCLOSURE:</strong> Cryptocurrency investments are subject to high market risk and
+                volatility. You should conduct your own due diligence or consult a certified financial advisor before
+                making any investment decisions. Bakkengrow Asset Management is not a bank, and digital assets are not
+                insured by the DICGC or any other government agency. Past performance is not indicative of future
+                results. The value of digital assets can go up or down and there can be a substantial risk that you lose
+                money buying, selling, holding, or investing in digital assets.
+                <br><br>
+                © 2024 Bakkengrow Asset Management. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* 1. MOTION ENGINE (Ghost + Solid Mix + Crypto Icons) */
+            const motionContainer = document.getElementById('motion-container');
+            const symbols = ['$', '€', '₹', '£', '¥', '₿', 'Ξ', '◎', '₮', '₳', 'Ð', '∞', '▲', '❝', '❞'];
+            const visualTypes = ['solid', 'ghost'];
+
+            function spawnSymbol() {
+                if (!motionContainer) return;
+                const el = document.createElement('div');
+                el.classList.add('float-symbol');
+                const type = visualTypes[Math.floor(Math.random() * visualTypes.length)];
+                el.classList.add(type);
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+
+                const leftPos = Math.random() * 95;
+                const size = Math.random() * 3 + 1.5;
+                const duration = Math.random() * 20 + 15;
+
+                el.style.left = leftPos + '%';
+                el.style.fontSize = size + 'rem';
+                el.style.animation = `floatUp ${duration}s linear forwards`;
+
+                motionContainer.appendChild(el);
+                el.addEventListener('animationend', () => { el.remove(); });
+            }
+            setInterval(spawnSymbol, 500);
+            for (let i = 0; i < 15; i++) spawnSymbol();
+
+            /* 2. TICKER & PARTNERS */
+            async function fetchTicker() {
+                // PARTNERS MARQUEE
+                const partners = ["FIREBLOCKS", "COINBASE CUSTODY", "DELOITTE AUDIT", "CHAINALYSIS", "POLYGON", "AAVE", "FIREBLOCKS", "COINBASE CUSTODY"];
+                const partnerHtml = partners.map(p => `<span class="partner-logo" style="margin: 0 40px;">${p}</span>`).join('');
+                document.getElementById('partners-track').innerHTML = partnerHtml + partnerHtml;
+
+                // LIVE DATA TICKER
+                const fallbackItems = [
+                    { name: "SENSEX", price: "79,482", change: 0.45, up: true },
+                    { name: "NIFTY 50", price: "24,140", change: 0.38, up: true },
+                    { name: "BTC/INR", price: "₹8,204,500", change: 2.4, up: true },
+                    { name: "ETH/INR", price: "₹312,400", change: -1.2, up: false },
+                    { name: "SOL/USD", price: "$210.45", change: 5.1, up: true },
+                    { name: "BAKKEN FUND", price: "+14.2% APY", change: 0, up: true, special: true },
+                    { name: "USD/INR", price: "₹83.45", change: -0.10, up: false }
+                ];
+
+                let items = [];
+                try {
+                    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,cardano,dogecoin&vs_currencies=inr,usd&include_24hr_change=true');
+                    const data = await res.json();
+
+                    items = [
+                        fallbackItems[0],
+                        fallbackItems[1],
+                        { name: "BTC/INR", price: "₹" + data.bitcoin.inr.toLocaleString(), change: data.bitcoin.inr_24h_change, up: data.bitcoin.inr_24h_change >= 0 },
+                        { name: "ETH/INR", price: "₹" + data.ethereum.inr.toLocaleString(), change: data.ethereum.inr_24h_change, up: data.ethereum.inr_24h_change >= 0 },
+                        { name: "SOL/USD", price: "$" + data.solana.usd, change: data.solana.usd_24h_change, up: data.solana.usd_24h_change >= 0 },
+                        fallbackItems[5],
+                        fallbackItems[6]
+                    ];
+                } catch (e) {
+                    items = fallbackItems;
+                }
+
+                let html = '';
+                items.forEach(item => {
+                    const arrow = item.up ? '▲' : '▼';
+                    const colorClass = item.up ? 'val-up' : 'val-down';
+                    const style = item.special ? 'color: var(--brand-purple-soft); font-weight: 800;' : '';
+                    const changeTxt = item.change !== 0 ? `(${arrow} ${Math.abs(item.change).toFixed(2)}%)` : '';
+                    html += `<div class="ticker-item" style="${style}">${item.name} <span class="${colorClass}">${item.price} ${changeTxt}</span></div>`;
+                });
+
+                const track = document.getElementById('ticker-track');
+                if (track) track.innerHTML = html + html;
+            }
+            fetchTicker();
+            setInterval(fetchTicker, 60000);
+
+            /* 3. THEME TOGGLER */
+            window.toggleTheme = function () {
+                const html = document.documentElement;
+                const current = html.getAttribute('data-theme');
+                const next = current === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', next);
+            }
+        });
+    </script>
+</body>
+
+</html>
