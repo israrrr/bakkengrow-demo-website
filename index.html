@@ -32,7 +32,7 @@
             --ticker-bg: #0b0511;
             --ticker-text: #ffffff;
 
-            --hero-overlay: radial-gradient(circle at 80% 20%, rgba(90, 24, 154, 0.08) 0%, transparent 60%);
+            --hero-overlay: radial-gradient(circle at 50% 50%, rgba(90, 24, 154, 0.08) 0%, transparent 70%);
             --anim-fill: rgba(0, 0, 0, 0.04);
             --anim-stroke: rgba(0, 0, 0, 0.08);
             --pattern-opacity: 0.03;
@@ -46,7 +46,7 @@
             --text-main: #ffffff;
             --text-muted: #b8b8b8;
             --nav-bg: rgba(5, 1, 10, 0.95);
-            --hero-overlay: radial-gradient(circle at 80% 20%, rgba(90, 24, 154, 0.25) 0%, transparent 60%);
+            --hero-overlay: radial-gradient(circle at 50% 50%, rgba(90, 24, 154, 0.25) 0%, transparent 70%);
             --anim-fill: rgba(255, 255, 255, 0.02);
             --anim-stroke: rgba(255, 255, 255, 0.06);
             --pattern-opacity: 0.05;
@@ -60,7 +60,6 @@
             width: 100%;
             height: 100%;
             background-color: #050505;
-            /* Always dark background for impact */
             z-index: 9999;
             display: flex;
             justify-content: center;
@@ -68,7 +67,6 @@
             transition: opacity 0.5s ease-out;
         }
 
-        /* Animation from your script */
         .logo-shape {
             fill: #5a189a;
         }
@@ -106,7 +104,6 @@
             animation-delay: 0.1s;
         }
 
-        /* Sped up to 3s */
         .fold-2 {
             animation: paperSnapLoop 3s ease-in-out infinite;
             animation-delay: 0.2s;
@@ -161,32 +158,43 @@
             list-style: none;
         }
 
-        img {
+        img,
+        svg {
             max-width: 100%;
+            height: auto;
             display: block;
         }
 
-        /* Unified Hover Effect */
-        .hover-lift {
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+        /* --- 4. RESPONSIVE INTERACTIONS --- */
+        @media (hover: hover) {
+            .hover-lift {
+                transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+            }
+
+            .hover-lift:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            }
         }
 
-        .hover-lift:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        @media (hover: none) {
+            .hover-lift:active {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
         }
 
-        /* Glass Panel */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             padding: 40px;
             border-radius: 12px;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
 
-        /* --- 4. MOTION BACKGROUND --- */
+        /* --- 5. MOTION BACKGROUND --- */
         #motion-container {
             position: fixed;
             top: 0;
@@ -248,7 +256,7 @@
             z-index: 0;
         }
 
-        /* --- 5. NAVIGATION --- */
+        /* --- 6. NAVIGATION --- */
         header {
             padding: 15px 0;
             position: fixed;
@@ -256,6 +264,7 @@
             top: 0;
             background: var(--nav-bg);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
         }
@@ -273,12 +282,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
-        }
-
-        .brand-logo img {
-            max-height: 40px;
-            width: auto;
         }
 
         .nav-actions {
@@ -349,15 +352,85 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
+            transition: transform 0.3s ease;
         }
 
-        /* --- 6. HERO SECTION --- */
+        .theme-switch:hover {
+            background: var(--brand-purple-soft);
+            color: white;
+        }
+
+        /* Mobile Hamburger Toggle */
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-main);
+            z-index: 1002;
+        }
+
+        /* Mobile Menu Drawer */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1001;
+            padding: 80px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+            transition: right 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-link {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* --- 7. HERO SECTION --- */
         .hero {
             min-height: 90vh;
             display: flex;
             align-items: center;
+            justify-content: center;
+            /* Center Content */
             position: relative;
             background: var(--hero-overlay);
             padding-top: 80px;
@@ -372,11 +445,10 @@
             z-index: 2;
         }
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 60px;
-            align-items: center;
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .tagline-mark {
@@ -389,6 +461,7 @@
             margin-bottom: 25px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
 
@@ -400,16 +473,32 @@
             display: block;
         }
 
+        .tagline-mark::after {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--brand-purple);
+            display: block;
+        }
+
         h1 {
             font-family: var(--font-display);
-            font-size: 3.8rem;
+            font-size: clamp(3rem, 6vw, 4.8rem);
+            /* Fluid Typography */
             line-height: 1.1;
             font-weight: 800;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             background: linear-gradient(135deg, var(--text-main) 30%, var(--brand-purple-soft));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+
+        .hero-p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            color: var(--text-main);
         }
 
         .txt-purple {
@@ -430,7 +519,7 @@
         .btn-primary {
             background: var(--brand-purple);
             color: white;
-            padding: 16px 36px;
+            padding: 18px 42px;
             font-family: var(--font-display);
             font-weight: 700;
             text-transform: uppercase;
@@ -439,19 +528,12 @@
             transition: all 0.3s;
             display: inline-block;
             box-shadow: 0 8px 20px rgba(90, 24, 154, 0.2);
+            font-size: 0.95rem;
         }
 
         .btn-primary:hover {
             background: var(--brand-purple-soft);
             transform: translateY(-4px);
-        }
-
-        .hero-visual {
-            height: 450px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .scroll-down {
@@ -478,7 +560,7 @@
             }
         }
 
-        /* --- 7. PARTNERS STRIP --- */
+        /* --- 8. TICKER & PARTNERS --- */
         .partners-strip {
             background: var(--bg-offset);
             padding: 30px 0;
@@ -499,7 +581,6 @@
             margin: 0 40px;
         }
 
-        /* --- 8. TICKER --- */
         .ticker-wrap {
             width: 100%;
             background: var(--ticker-bg);
@@ -571,7 +652,7 @@
         }
 
         .section-header h2 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 2.5rem);
             margin-bottom: 15px;
             font-weight: 700;
         }
@@ -593,7 +674,7 @@
         }
 
         .stat-num {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 3vw, 2.5rem);
             font-weight: 700;
             color: var(--brand-green);
             font-family: var(--font-display);
@@ -606,20 +687,6 @@
             letter-spacing: 1px;
             margin-top: 5px;
             color: var(--text-muted);
-        }
-
-        .stat-card {
-            background: var(--glass-bg);
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid var(--brand-green);
-            margin-bottom: 20px;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateX(5px);
         }
 
         /* Global Liquidity */
@@ -648,7 +715,6 @@
 
         .currency-icon {
             animation: bob 3s infinite ease-in-out;
-            opacity: 1;
         }
 
         .currency-icon:nth-child(even) {
@@ -675,10 +741,6 @@
             margin-top: 50px;
         }
 
-        .trust-card:hover {
-            border-color: var(--brand-blue);
-        }
-
         .trust-icon {
             font-size: 2.5rem;
             color: var(--brand-blue);
@@ -698,10 +760,6 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
             margin-top: 40px;
-        }
-
-        .insight-card:hover {
-            border-color: var(--brand-purple);
         }
 
         .insight-date {
@@ -838,24 +896,84 @@
             text-align: justify;
         }
 
+        /* --- 10. MEDIA QUERIES (BREAKPOINTS) --- */
+
+        /* Tablet & Mobile (< 900px) */
         @media (max-width: 900px) {
             .nav-links {
                 display: none;
             }
 
-            .hero-grid,
-            .card-grid,
-            .trust-grid,
+            .mobile-toggle {
+                display: block;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+
+            /* Footer Optimization: Grid 2 Columns for Links */
+            footer {
+                padding: 50px 0;
+            }
+
             .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                text-align: left;
+            }
+
+            .footer-col:first-child {
+                grid-column: 1 / -1;
+                /* Logo/Bio takes full width */
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .footer-socials {
+                justify-content: center;
+            }
+
+            /* Card grids revert to stack */
+            .card-grid {
                 grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 2.8rem;
-            }
-
-            .partners-grid {
                 gap: 40px;
+            }
+
+            .stat-display {
+                justify-content: center;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 40px auto 0;
+            }
+
+            /* Slow down ticker for better mobile readability */
+            .ticker-track {
+                animation-duration: 60s;
+            }
+        }
+
+        /* Small Mobile (< 480px) */
+        @media (max-width: 480px) {
+            .currency-row {
+                gap: 20px;
+                padding: 20px 30px;
+            }
+
+            .currency-icon {
+                font-size: 2rem;
+            }
+
+            .glass-panel {
+                padding: 25px;
+            }
+
+            .btn-primary {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -882,6 +1000,22 @@
     <div class="origami-bg"></div>
     <div id="motion-container"></div>
 
+    <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMenu()"></div>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span
+                style="font-family:var(--font-display); font-weight:800; font-size:1.2rem; color:var(--brand-purple);">MENU</span>
+            <i class="ri-close-line" onclick="toggleMenu()" style="font-size:1.8rem; cursor:pointer;"></i>
+        </div>
+        <a href="#strategies" class="mobile-link" onclick="toggleMenu()">Strategy</a>
+        <a href="#security" class="mobile-link" onclick="toggleMenu()">Security</a>
+        <a href="#insights" class="mobile-link" onclick="toggleMenu()">Insights</a>
+        <a href="https://www.binance.com/en/markets/overview" target="_blank" class="mobile-link"
+            onclick="toggleMenu()">Binance</a>
+        <a href="https://opensea.io/" target="_blank" class="mobile-link" onclick="toggleMenu()">OpenSea</a>
+    </div>
+
     <header>
         <div class="nav-container">
             <a href="#" class="brand-logo">
@@ -903,47 +1037,30 @@
                         class="data-btn hover-lift">Binance</a>
                     <a href="https://opensea.io/" target="_blank" class="data-btn hover-lift">OpenSea</a>
                 </div>
+
                 <button class="theme-switch hover-lift" onclick="toggleTheme()" title="Toggle Dark Mode">🌗</button>
-                <a href="#" class="btn-primary hover-lift" style="padding: 10px 24px; font-size: 0.8rem;">Portal</a>
+
+                <div class="mobile-toggle" onclick="toggleMenu()">
+                    <i class="ri-menu-4-line"></i>
+                </div>
             </div>
         </div>
     </header>
 
     <section class="hero">
         <div class="container">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <span class="tagline-mark">BE A BREADWINNER</span>
-                    <h1>Responsible Wealth.<br>For The Family Breadwinner.</h1>
-                    <p>
-                        We replace speculation with structure. Institutional-grade crypto asset management blending
-                        <span class="txt-purple">DeFi Innovation</span> with
-                        <span class="txt-green">Sustainable Growth</span> and
-                        <span class="txt-blue">Bank-Grade Security</span>.
-                    </p>
-                    <a href="#" class="btn-primary hover-lift" style="margin-top: 20px;">Secure Your Allocation</a>
-                </div>
-
-                <div class="hero-visual">
-                    <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="200" cy="200" r="120" stroke="var(--brand-purple)" stroke-width="1.5"
-                            stroke-dasharray="10 10" opacity="0.3">
-                            <animateTransform attributeName="transform" type="rotate" from="0 200 200" to="360 200 200"
-                                dur="20s" repeatCount="indefinite" />
-                        </circle>
-                        <circle cx="200" cy="200" r="80" stroke="var(--brand-green)" stroke-width="2" opacity="0.5" />
-                        <path d="M200 120 L280 200 L200 280 L120 200 Z" stroke="var(--brand-blue)" stroke-width="2"
-                            fill="none" />
-                        <circle cx="200" cy="120" r="6" fill="var(--brand-purple)" />
-                        <circle cx="280" cy="200" r="6" fill="var(--brand-purple)" />
-                        <circle cx="200" cy="280" r="6" fill="var(--brand-purple)" />
-                        <circle cx="120" cy="200" r="6" fill="var(--brand-purple)" />
-                        <circle cx="200" cy="200" r="15" fill="var(--brand-green)">
-                            <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" />
-                        </circle>
-                    </svg>
-                </div>
+            <div class="hero-content">
+                <span class="tagline-mark">BE A BREADWINNER</span>
+                <h1>Responsible Wealth.<br>For The Family Breadwinner.</h1>
+                <p class="hero-p">
+                    We replace speculation with structure. Institutional-grade crypto asset management blending
+                    <span class="txt-purple">DeFi Innovation</span> with
+                    <span class="txt-green">Sustainable Growth</span> and
+                    <span class="txt-blue">Bank-Grade Security</span>.
+                </p>
+                <a href="#" class="btn-primary hover-lift">Secure Your Allocation</a>
             </div>
+
             <div class="scroll-down">
                 <i class="ri-arrow-down-line" style="font-size: 1.5rem; color: var(--brand-purple);"></i>
             </div>
@@ -1288,9 +1405,16 @@
                 const next = current === 'light' ? 'dark' : 'light';
                 html.setAttribute('data-theme', next);
             }
+
+            /* 4. MOBILE MENU TOGGLER */
+            window.toggleMenu = function () {
+                const menu = document.getElementById('mobile-menu');
+                const overlay = document.getElementById('mobile-overlay');
+                menu.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
         });
     </script>
 </body>
 
 </html>
-
